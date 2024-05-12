@@ -19,8 +19,8 @@ const Customizer = () => {
 	const snap = useSnapshot(state);
 
 	const [file, setFile] = useState("");
-	const [promp, setPromp] = useState("");
-	const [generateImg, setGenerateImg] = useState(false);
+	const [prompt, setPrompt] = useState("");
+	const [generatingImg, setGeneratingImg] = useState(false);
 	const [activeEditorTab, setActiveEditorTab] = useState("");
 	const [activeFilterTab, setActiveFilterTab] = useState({
 		logoShirt: true,
@@ -45,11 +45,31 @@ const Customizer = () => {
 			case "aipicker":
 				return (
 					<>
-						<AIPicker />
+						<AIPicker
+							prompt={prompt}
+							setPrompt={setPrompt}
+							generatingImg={generatingImg}
+							handleSubmit={handleSubmit}
+						/>
 					</>
 				);
 			default:
 				return null;
+		}
+	};
+
+	const handleSubmit = async (type) => {
+		if (!prompt) {
+			return alert("Masukkan perintah");
+		}
+
+		try {
+			//? Generate AI from BackEnd
+		} catch (error) {
+			alert(error);
+		} finally {
+			setGeneratingImg(false);
+			setActiveEditorTab("");
 		}
 	};
 
