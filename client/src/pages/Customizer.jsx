@@ -18,7 +18,7 @@ import {
 const Customizer = () => {
 	const snap = useSnapshot(state);
 
-	const [file, setFil] = useState("");
+	const [file, setFile] = useState("");
 	const [promp, setPromp] = useState("");
 	const [generateImg, setGenerateImg] = useState(false);
 	const [activeEditorTab, setActiveEditorTab] = useState("");
@@ -39,7 +39,7 @@ const Customizer = () => {
 			case "filepicker":
 				return (
 					<>
-						<FilePicker />
+						<FilePicker file={file} setFile={setFile} readFile={readFile} />
 					</>
 				);
 			case "aipicker":
@@ -51,6 +51,37 @@ const Customizer = () => {
 			default:
 				return null;
 		}
+	};
+
+	const handleDecals = (type, result) => {
+		const decalType = DecalTypes[type];
+		console.log(decalType.stateProperty);
+
+		state[decalType.stateProperty] = result;
+
+		if (!activeFilterTab[decalType.filterTab]) {
+			handleActiveFilterTab(decalType.filterTab);
+		}
+	};
+
+	const handleActiveFilterTab = (tabname) => {
+		switch (tabname) {
+			case "logoshirt":
+				state.isLogoTexture = !activeFilterTab[tabname];
+				break;
+			case "stylishShirt":
+				state.isFullTexture = !activeFilterTab[tabname];
+			default:
+				state.isLogoTexture = true;
+				state.isFullTexture = false;
+		}
+	};
+
+	const readFile = (type) => {
+		reader(file).then((result) => {
+			handleDecals(type, result);
+			setActiveEditorTab("");
+		});
 	};
 
 	return (
