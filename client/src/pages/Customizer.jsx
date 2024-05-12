@@ -14,6 +14,7 @@ import {
 	Tab,
 	FilePicker,
 } from "../Component";
+import Swal from "sweetalert2";
 
 const Customizer = () => {
 	const snap = useSnapshot(state);
@@ -25,6 +26,18 @@ const Customizer = () => {
 	const [activeFilterTab, setActiveFilterTab] = useState({
 		logoShirt: true,
 		stylishShirt: false,
+	});
+
+	const Toast = Swal.mixin({
+		toast: true,
+		position: "top-end",
+		showConfirmButton: false,
+		timer: 3000,
+		timerProgressBar: true,
+		didOpen: (toast) => {
+			toast.onmouseenter = Swal.stopTimer;
+			toast.onmouseleave = Swal.resumeTimer;
+		},
 	});
 
 	//? show tab content depent on active tab
@@ -60,20 +73,44 @@ const Customizer = () => {
 
 	const handleSubmit = async (type) => {
 		if (!prompt) {
-			return alert("Masukkan perintah");
+			return Toast.fire({
+				icon: "error",
+				title: "Masukkan Perintah",
+			});
 		}
 
-		try {
-			//? Generate AI from BackEnd
-		} catch (error) {
-			alert(error);
-		} finally {
-			setGeneratingImg(false);
-			setActiveEditorTab("");
-		}
+		Toast.fire({
+			icon: "info",
+			title: "Still under development",
+		});
+
+		// try {
+		// 	//? Generate AI from BackEnd
+		// 	setGeneratingImg(true);
+
+		// 	const response = await fetch("http://localhost:8080/api/v1/dalle", {
+		// 		method: "POST",
+		// 		headers: {
+		// 			"Content-Type": "application/json",
+		// 		},
+		// 		body: JSON.stringify({
+		// 			prompt,
+		// 		}),
+		// 	});
+
+		// 	const data = await response.json();
+
+		// 	handleDecals(type, `data:image/png;base64,${data.photo}`);
+		// } catch (error) {
+		// 	alert(error);
+		// } finally {
+		// 	setGeneratingImg(false);
+		// 	setActiveEditorTab("");
+		// }
 	};
 
 	const handleDecals = (type, result) => {
+		console.log({ result });
 		const decalType = DecalTypes[type];
 		state[decalType.stateProperty] = result;
 
