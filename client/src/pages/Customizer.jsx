@@ -180,7 +180,7 @@ const Customizer = () => {
 							{...fadeAnimation}>
 							<CustomButton
 								type={"filled"}
-								title={"Kembali"}
+								title={"Back"}
 								handleClick={() => (state.intro = true)}
 								customStyles={"w-fit px-4 py-2.5 font-bold text-sm"}
 							/>
