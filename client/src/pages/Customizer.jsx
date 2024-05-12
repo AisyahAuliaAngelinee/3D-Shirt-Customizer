@@ -55,8 +55,6 @@ const Customizer = () => {
 
 	const handleDecals = (type, result) => {
 		const decalType = DecalTypes[type];
-		console.log(decalType.stateProperty);
-
 		state[decalType.stateProperty] = result;
 
 		if (!activeFilterTab[decalType.filterTab]) {
@@ -66,7 +64,7 @@ const Customizer = () => {
 
 	const handleActiveFilterTab = (tabname) => {
 		switch (tabname) {
-			case "logoshirt":
+			case "logoShirt":
 				state.isLogoTexture = !activeFilterTab[tabname];
 				break;
 			case "stylishShirt":
@@ -75,6 +73,14 @@ const Customizer = () => {
 				state.isLogoTexture = true;
 				state.isFullTexture = false;
 		}
+
+		//? after setting state
+		setActiveFilterTab((prevState) => {
+			return {
+				...prevState,
+				[tabname]: !prevState[tabname],
+			};
+		});
 	};
 
 	const readFile = (type) => {
@@ -130,8 +136,10 @@ const Customizer = () => {
 											key={tab.name}
 											tab={tab}
 											isFilterTab
-											isActiveTab={""}
-											handleClick={() => {}}
+											isActiveTab={activeFilterTab[tab.name]}
+											handleClick={() => {
+												handleActiveFilterTab(tab.name);
+											}}
 										/>
 									</>
 								);
