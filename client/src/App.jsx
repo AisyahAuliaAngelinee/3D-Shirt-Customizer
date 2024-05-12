@@ -1,7 +1,9 @@
 function App() {
 	return (
 		<>
-			<div>Hello World</div>
+			<main className="app transition-all ease-in">
+				<Home />
+			</main>
 		</>
 	);
 }
